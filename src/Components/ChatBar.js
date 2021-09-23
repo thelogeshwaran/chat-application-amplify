@@ -13,9 +13,9 @@ function ChatBar() {
             type : "Room",
             members:["vigneshkumar"]
         }
-        const {data} = await API.graphql(graphqlOperation(createRoom,{ input: room }))
-        console.log(data.createRoom)
-        setRooms([data.createRoom,...rooms])
+        // const {data} = await API.graphql(graphqlOperation(createRoom,{ input: room }))
+        // console.log(data.createRoom)
+        // setRooms([data.createRoom,...rooms])
     }
   return (
     <div className="bg-chatGray w-2/5 border-gray-500 border-r-2 flex flex-col">

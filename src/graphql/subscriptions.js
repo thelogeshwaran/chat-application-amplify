@@ -1,163 +1,168 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateMessages = /* GraphQL */ `
-  subscription OnCreateMessages($room: ID!) {
-    onCreateMessages(room: $room) {
+export const onCreateConvoLink = /* GraphQL */ `
+  subscription OnCreateConvoLink($convoLinkUserId: ID!) {
+    onCreateConvoLink(convoLinkUserId: $convoLinkUserId) {
       id
-      message
-      ownername
-      createdAt
-      room {
+      user {
         id
-        name
-        type
-        createdAt
-        updatedAt
-        members
+        username
+        conversations {
+          nextToken
+        }
         messages {
           nextToken
         }
-        owner
+        createdAt
+        updatedAt
       }
-      updatedAt
-    }
-  }
-`;
-export const onCreateRoom = /* GraphQL */ `
-  subscription OnCreateRoom($owner: String, $members: String) {
-    onCreateRoom(owner: $owner, members: $members) {
-      id
-      name
-      type
+      convoLinkUserId
+      conversation {
+        id
+        messages {
+          nextToken
+        }
+        associated {
+          nextToken
+        }
+        name
+        members
+        createdAt
+        updatedAt
+      }
+      convoLinkConversationId
       createdAt
       updatedAt
-      members
-      messages {
-        items {
-          id
-          message
-          ownername
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      owner
-    }
-  }
-`;
-export const onUpdateRoom = /* GraphQL */ `
-  subscription OnUpdateRoom($owner: String, $members: String) {
-    onUpdateRoom(owner: $owner, members: $members) {
-      id
-      name
-      type
-      createdAt
-      updatedAt
-      members
-      messages {
-        items {
-          id
-          message
-          ownername
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      owner
-    }
-  }
-`;
-export const onDeleteRoom = /* GraphQL */ `
-  subscription OnDeleteRoom($owner: String, $members: String) {
-    onDeleteRoom(owner: $owner, members: $members) {
-      id
-      name
-      type
-      createdAt
-      updatedAt
-      members
-      messages {
-        items {
-          id
-          message
-          ownername
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      owner
     }
   }
 `;
 export const onCreateMessage = /* GraphQL */ `
-  subscription OnCreateMessage {
-    onCreateMessage {
+  subscription OnCreateMessage($messageConversationId: ID!) {
+    onCreateMessage(messageConversationId: $messageConversationId) {
       id
-      message
-      ownername
-      createdAt
-      room {
+      author {
         id
-        name
-        type
-        createdAt
-        updatedAt
-        members
+        username
+        conversations {
+          nextToken
+        }
         messages {
           nextToken
         }
-        owner
+        createdAt
+        updatedAt
       }
+      authorId
+      content
+      conversation {
+        id
+        messages {
+          nextToken
+        }
+        associated {
+          nextToken
+        }
+        name
+        members
+        createdAt
+        updatedAt
+      }
+      messageConversationId
+      createdAt
       updatedAt
     }
   }
 `;
-export const onUpdateMessage = /* GraphQL */ `
-  subscription OnUpdateMessage {
-    onUpdateMessage {
+export const onCreateUser = /* GraphQL */ `
+  subscription OnCreateUser {
+    onCreateUser {
       id
-      message
-      ownername
-      createdAt
-      room {
-        id
-        name
-        type
-        createdAt
-        updatedAt
-        members
-        messages {
-          nextToken
+      username
+      conversations {
+        items {
+          id
+          convoLinkUserId
+          convoLinkConversationId
+          createdAt
+          updatedAt
         }
-        owner
+        nextToken
       }
+      messages {
+        items {
+          id
+          authorId
+          content
+          messageConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
       updatedAt
     }
   }
 `;
-export const onDeleteMessage = /* GraphQL */ `
-  subscription OnDeleteMessage {
-    onDeleteMessage {
+export const onUpdateUser = /* GraphQL */ `
+  subscription OnUpdateUser {
+    onUpdateUser {
       id
-      message
-      ownername
-      createdAt
-      room {
-        id
-        name
-        type
-        createdAt
-        updatedAt
-        members
-        messages {
-          nextToken
+      username
+      conversations {
+        items {
+          id
+          convoLinkUserId
+          convoLinkConversationId
+          createdAt
+          updatedAt
         }
-        owner
+        nextToken
       }
+      messages {
+        items {
+          id
+          authorId
+          content
+          messageConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteUser = /* GraphQL */ `
+  subscription OnDeleteUser {
+    onDeleteUser {
+      id
+      username
+      conversations {
+        items {
+          id
+          convoLinkUserId
+          convoLinkConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      messages {
+        items {
+          id
+          authorId
+          content
+          messageConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
       updatedAt
     }
   }
