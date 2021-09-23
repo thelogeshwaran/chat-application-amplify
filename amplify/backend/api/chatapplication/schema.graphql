@@ -1,5 +1,31 @@
-type Todo @model {
+type Room
+  @model
+  @auth(rules: [
+  { allow: owner }
+  { allow: owner, ownerField: "members" }])
+  @key(
+    name: "roomsByDate"
+    fields: ["type", "updatedAt"]
+    queryField: "roomsByDate"
+  ) {
   id: ID!
   name: String!
-  description: String
+  type: String!
+  createdAt: String!
+  updatedAt: String!
+  members:[String]
+  messages: [Message] @connection(name: "RoomMessages",sortField: "createdAt")
+}
+
+type Message @model {
+  id: ID!
+  message: String!
+  ownername: String!
+  createdAt: String!
+  room: Room @connection(name: "RoomMessages")
+}
+
+type Subscription {
+  onCreateMessages (room: ID!): Message
+    @aws_subscribe(mutations: ["createMessage"])
 }
