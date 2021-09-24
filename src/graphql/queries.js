@@ -29,6 +29,7 @@ export const getUser = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -50,14 +51,15 @@ export const listUsers = /* GraphQL */ `
         }
         createdAt
         updatedAt
+        owner
       }
       nextToken
     }
   }
 `;
-export const getConvo = /* GraphQL */ `
-  query GetConvo($id: ID!) {
-    getConvo(id: $id) {
+export const getConversation = /* GraphQL */ `
+  query GetConversation($id: ID!) {
+    getConversation(id: $id) {
       id
       messages {
         items {
@@ -84,6 +86,30 @@ export const getConvo = /* GraphQL */ `
       members
       createdAt
       updatedAt
+    }
+  }
+`;
+export const listConversations = /* GraphQL */ `
+  query ListConversations(
+    $filter: ModelConversationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listConversations(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        messages {
+          nextToken
+        }
+        associated {
+          nextToken
+        }
+        name
+        members
+        createdAt
+        updatedAt
+      }
+      nextToken
     }
   }
 `;

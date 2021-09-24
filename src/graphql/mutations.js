@@ -32,6 +32,7 @@ export const createUser = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -66,6 +67,7 @@ export const updateUser = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -100,6 +102,7 @@ export const deleteUser = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -156,6 +159,7 @@ export const createMessage = /* GraphQL */ `
         }
         createdAt
         updatedAt
+        owner
       }
       authorId
       content
@@ -196,6 +200,7 @@ export const updateMessage = /* GraphQL */ `
         }
         createdAt
         updatedAt
+        owner
       }
       authorId
       content
@@ -236,6 +241,7 @@ export const deleteMessage = /* GraphQL */ `
         }
         createdAt
         updatedAt
+        owner
       }
       authorId
       content
@@ -276,6 +282,7 @@ export const createConvoLink = /* GraphQL */ `
         }
         createdAt
         updatedAt
+        owner
       }
       convoLinkUserId
       conversation {
@@ -315,6 +322,7 @@ export const updateConvoLink = /* GraphQL */ `
         }
         createdAt
         updatedAt
+        owner
       }
       convoLinkUserId
       conversation {

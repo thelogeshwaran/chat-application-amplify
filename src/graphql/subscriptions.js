@@ -16,6 +16,7 @@ export const onCreateConvoLink = /* GraphQL */ `
         }
         createdAt
         updatedAt
+        owner
       }
       convoLinkUserId
       conversation {
@@ -52,6 +53,7 @@ export const onCreateMessage = /* GraphQL */ `
         }
         createdAt
         updatedAt
+        owner
       }
       authorId
       content
@@ -102,6 +104,7 @@ export const onCreateUser = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -133,6 +136,7 @@ export const onUpdateUser = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -164,6 +168,7 @@ export const onDeleteUser = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      owner
     }
   }
 `;

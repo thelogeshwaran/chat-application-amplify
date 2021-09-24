@@ -1,16 +1,19 @@
 import graphql from 'graphql-tag'
 import gql from 'graphql-tag';
 
-// mutations
+
 const createUser = `
-  mutation($username: String!) {
-    createUser(input: {
-      username: $username
-    }) {
-      id username createdAt
-    }
+mutation CreateUser(
+    $input: CreateUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    createUser(input: $input, condition: $condition) {
+      id
+      username
   }
-`
+  }
+`;
+
 
 const createMessage = gql`mutation CreateMessage(
     $createdAt: String, $id: ID, $authorId: String, $content: String!, $messageConversationId: ID!

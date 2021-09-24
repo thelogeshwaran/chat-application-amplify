@@ -8,7 +8,6 @@ function Homepage() {
   return (
     <div className="flex flex-row h-screen">
       <ChatBar />
-      {room && <Chatbox />}
     </div>
   );
 }

@@ -1,25 +1,27 @@
 import API, { graphqlOperation } from "@aws-amplify/api";
 import { input } from "@aws-amplify/ui";
 import React from "react";
+import { useParams } from "react-router";
 import { useMessageProvider } from "../Context/MessagesProvider";
-import { createMessage, updateRoom } from "../graphql/mutations";
+import { createMessage } from "../graphql";
 import RoomHeader from "./RoomHeader";
 import RoomInput from "./RoomInput";
 import RoomMessages from "./RoomMessages";
+import { nanoid } from 'nanoid'
+import { useEffect } from "react/cjs/react.development";
 
 function Chatbox() {
   const { room, user, messages, setMessages } = useMessageProvider();
+  const { conversationId } = useParams();
+
   async function newMessage(msg) {
     const message = {
-      message: msg,
-      ownername: user.username,
-      messageRoomId: room.id,
+      id: nanoid(),
+      messageConversationId: conversationId,
+      content: msg,
+      authorId: user.username
     };
-    const { data } = await API.graphql(
-      graphqlOperation(createMessage, { input: message })
-    );
-    setMessages([...messages, data.createMessage]);
-    console.log(data);
+     await API.graphql(graphqlOperation(createMessage,message))
   }
   return (
     <div className="w-full bg-chatGray flex flex-col">
