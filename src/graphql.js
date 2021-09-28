@@ -131,6 +131,22 @@ const onCreateMessage = gql`
   }
 `
 
+const onCreateConvoLink = /* GraphQL */ `
+  subscription OnCreateConvoLink($convoLinkUserId: ID!) {
+    onCreateConvoLink(convoLinkUserId: $convoLinkUserId) {
+      id
+      convoLinkUserId
+      convoLinkConversationId
+      createdAt
+      updatedAt
+      conversation {
+        id
+        name
+      }
+    }
+  }
+`;
+
 const onCreateUser = gql`subscription OnCreateUser {
   onCreateUser {
     id
@@ -150,5 +166,6 @@ export {
   getUserAndConversations,
   listUsers,
   onCreateMessage,
-  onCreateUser
+  onCreateUser,
+  onCreateConvoLink
 }

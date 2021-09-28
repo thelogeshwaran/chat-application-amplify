@@ -1,35 +1,42 @@
 import React from "react";
 import ChatInput from "./ChatInput";
 import ChatRoom from "./ChatRoom";
-import { API, graphqlOperation } from 'aws-amplify';
-import { createRoom } from "../graphql/mutations"
 import { useMessageProvider } from "../Context/MessagesProvider";
+import { observer } from "mobx-react-lite";
+
 
 function ChatBar() {
-    const {rooms,setRooms} = useMessageProvider();
-    async function newRoom(roomName){
-        const room ={
-            name : roomName,
-            type : "Room",
-            members:["vigneshkumar"]
-        }
-        // const {data} = await API.graphql(graphqlOperation(createRoom,{ input: room }))
-        // console.log(data.createRoom)
-        // setRooms([data.createRoom,...rooms])
-    }
+  const { popup, setPopup,rootTree } = useMessageProvider();
+  async function searchChat(name) {
+    console.log(name);
+  }
+  
+
   return (
-    <div className="bg-chatGray w-2/5 border-gray-500 border-r-2 flex flex-col">
-      <div className="bg-chatGreen h-28 text-white text-4xl p-5">Chatapp</div>
-      <ChatInput onSubmit={newRoom}/>
-      <div className="overflow-auto pb-5">
-      {
-          rooms.map(room =>(
-              <ChatRoom key={room.id} room={room}  />
-          ))
+    <div
+      className={
+        popup === "Chat"
+          ? "w-2/5 bg-chatPurple border-gray-500 border-r-2"
+          : "w-0 "
       }
+    >
+      <div className="flex flex-col">
+        <div className="flex bg-chatPurple h-20 justify-between p-3 px-8 items-center">
+          <div className="font-bold text-2xl">Messages</div>
+          <div className="text-chatGray cursor-pointer" onClick={()=> setPopup("Members")}>+ Create new chat</div>
+        </div>
+        <ChatInput onSubmit={searchChat} placeholder="Search by keyword..." />
+        <div className="overflow-auto pb-5 ">
+          {rootTree.conversations.map((room) => (
+            <ChatRoom key={room.id} room={room} />
+          ))}
+        </div>
       </div>
     </div>
   );
 }
 
-export default ChatBar;
+export default observer(ChatBar);
+
+
+

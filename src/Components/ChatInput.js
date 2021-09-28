@@ -1,6 +1,9 @@
+import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
+import { BsSearch } from "react-icons/bs";
 
-function ChatInput({ onSubmit }) {
+
+function ChatInput({ onSubmit, placeholder }) {
   const [input, setInput] = useState("");
 
   const setSubmit = (e) => {
@@ -10,13 +13,14 @@ function ChatInput({ onSubmit }) {
       setInput("");
     }
   };
-  
+
   return (
-    <div className="flex bg-chatLightGray w-full">
-      <form className="w-full" onSubmit={(e) => setSubmit(e)}>
+    <div className="flex bg-chatPurple w-full justify-center">
+      <form className="w-11/12 m-3 flex items-center bg-chatPurpleDark  rounded-xl" onSubmit={(e) => setSubmit(e)}>
+      <BsSearch className="m-3 ml-6" size={23}/>
         <input
-          placeholder="Create a new Chat"
-          className="m-3 border-2 border-gray-500 w-11/12 h-10 p-3 rounded-xl"
+          placeholder={placeholder}
+          className="w-full p-4  bg-chatPurpleDark  rounded-xl outline-none"
           value={input}
           onChange={(e) => setInput(e.target.value)}
         ></input>
@@ -25,4 +29,4 @@ function ChatInput({ onSubmit }) {
   );
 }
 
-export default ChatInput;
+export default observer(ChatInput) ;

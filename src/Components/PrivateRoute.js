@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import React from "react";
 import { Redirect, Route } from "react-router-dom";
 
@@ -13,4 +14,4 @@ function PrivateRoute({ component: Component, ...rest }) {
   );
 }
 
-export default PrivateRoute;
+export default observer(PrivateRoute);

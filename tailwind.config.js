@@ -12,17 +12,20 @@ module.exports = {
         'full': '100%',
        },
       colors:{
-        chatGray: "#ECE5DD",
+        chatGray: "#5E637A",
         chatWhite : "#ffffff",
         chatLightGray:"#D1D5DB",
-        chatGreen:"#128C7E",
-        messageGreen:"#DCF8C6",
-        messageDarkGreen: "#128C7E"
+        chatPurple:"#212443",
+        chatPurpleDark:"#252849",
+        chatBlue:"#406AE0",
+        chatPurpleLight:"#524A7A"
       }
     },
   },
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require('tailwind-scrollbar')
+  ],
 }

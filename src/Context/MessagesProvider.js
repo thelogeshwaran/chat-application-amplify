@@ -1,129 +1,144 @@
-import API,{ graphqlOperation} from "@aws-amplify/api";
-import React, { useContext, useEffect, createContext, useState } from "react";
-import { listConversations, listMessages } from "../graphql/queries";
-import { Auth } from "aws-amplify";
-import * as subscriptions from '../graphql/subscriptions';
-import { getUser as GetUser, createUser, getUserAndConversations } from "../graphql";
-import { listUsers, onCreateUser as OnCreateUser, createConvo,createConvoLink } from '../graphql'
+import API, { graphqlOperation } from "@aws-amplify/api";
+import React, { useContext, useEffect, createContext } from "react";
+import { getUser as GetUser, createUser, onCreateUser } from "../graphql";
+import {
+  createConvo,
+  createConvoLink,
+} from "../graphql";
+import { useHistory } from "react-router";
+import { onCreateConvoLink } from "../graphql";
+import { setupRootStore } from "../MST/Setup";
+import { useAuthProvider } from "./AuthProvider";
 
 const MessageContext = createContext();
 
 export function MessageProvider({ children }) {
-    const [rooms, setRooms] = useState([]);
-    const [ room, setRoom] = useState("");
-    const [ messages, setMessages ] = useState([]);
-    const [ user, setUser ] = useState("")
+  const { rootTree } = setupRootStore();
+  const { user,popup,setPopup } = useAuthProvider();
+  
+  const history = useHistory();
+  let subscription;
+  let userSubscription;
 
-    async function fetchRooms(){
-      const queryparams ={
-        type : "Room",
-        sortDirection: "DESC"
-      }
-      // const {data} = await API.graphql(graphqlOperation(listUsers))
-      // console.log(data.listUsers.items)
-      // const users = data.listUsers.items.filter( item => item.username !== user.username)
-      // setRooms(users)
+
+  useEffect(()=>{
+    rootTree.fetchConversations()
+  },[rootTree])
+
+
+
+  useEffect(() => {
+    if (user) {
+      subscribed(user.attributes.sub);
+      checkIfUserExists(user);
     }
-    async function fetchMessages(roomid){
-        const room = {
-            id : roomid
-        }
-        // const { data } = await API.graphql(graphqlOperation(getRoom, room))
-        // console.log(data.getRoom.messages.items)
-        // setMessages(data.getRoom.messages.items)
-    } 
-
-    async function fetchUser(){
-        try {
-            const user = await Auth.currentAuthenticatedUser();
-            user && setUser(user);
-            checkIfUserExists(user.attributes.sub, user.username)
-            console.log(user.attributes.sub)
-          } catch (err) {
-            console.log(err);
-          }
-    }
-
-    
-
-    useEffect(()=>{
-        fetchUser()
-        
-    },[])
-    useEffect(()=>{
+    return ()=>{
       if(user){
-        fetchRooms()
-        conversations()
-      }
-    },[user])
-    // useEffect(()=>{
-    //   if(user){
-    //     subscriptioned(user)
-    //   }
-    // },[user])
-
-    // useEffect(()=>{
-    //     if(room){
-    //         createConversation()
-    //     }
-    // },[room])
-
-    async function createConversation(){
-      // const members = [user.username, room.username].sort();;
-      // const conversationName = members.join(' and ');
-      // const convo = {name: conversationName, members}
-      // console.log(convo)
-      // const conversation = await API.graphql(graphqlOperation(createConvo, convo))
-      // const { data: { createConvo: { id: convoLinkConversationId }}} = conversation
-      // const relation1 = { convoLinkUserId: user.username, convoLinkConversationId }
-      // const relation2 = { convoLinkUserId: room.username, convoLinkConversationId }
-      // await API.graphql(graphqlOperation(createConvoLink, relation1))
-      // await API.graphql(graphqlOperation(createConvoLink, relation2))
-    }
-
-    async function conversations(){
-      const {data} = await API.graphql(graphqlOperation(listConversations))
-      console.log(data)
-      setRooms(data.listConversations.items)
-    }
-    async function checkIfUserExists(id,name) {
-      console.log(id)
-      try {
-        const user = await API.graphql(graphqlOperation(GetUser, {id}))
-        const { getUser } = user.data
-        if (!getUser) {
-          createUsers(id,name)
-          console.log("no user")
-        } else {
-          console.log('me:', getUser)
-        }
-      } catch (err) {
-        console.log('error fetching user: ', err)
+        subscription.unsubscribe();
       }
     }
+  }, [user,rootTree]);
 
 
-    async function createUsers(id,username) {
-      console.log(username)
-      const newUser = {
-        id: id,
-        username : username
-      }
-      try {
-       const resp =  await API.graphql(graphqlOperation(createUser,{input:newUser}))
-       console.log(resp)
-      } catch (err) {
-        console.log( err)
-      }
+  function subscribed(id){
+    subscription = API.graphql(
+      graphqlOperation(onCreateConvoLink, {
+        convoLinkUserId: id,
+      })
+    ).subscribe({
+      next: ({  value }) =>rootTree.addNewConversation(value.data.onCreateConvoLink.conversation),
+      error: (error) => console.log(error),
+    });
+    userSubscription = API.graphql(
+      graphqlOperation(onCreateUser)
+    ).subscribe({
+      next: ({  value }) =>{
+        rootTree.addNewMember(value.data.onCreateUser)
+        console.log(value.data)
+      },
+            error: (error) => console.log(error),
+    });
+  }
+
+  
+
+  async function createConversation(member) {
+    const members = [user.username, member.username].sort();
+    const conversationName = members.join(' and ');
+    const convo = { name: conversationName, members };
+    const existed = rootTree.conversations.filter((room) => room.name === conversationName);
+    if (existed.length > 0) {
+      history.push(`/conversation/${existed[0].id}/${existed[0].name}`);
+      setPopup("Chat");
+    } else {
+      const conversation = await API.graphql(
+        graphqlOperation(createConvo, convo)
+      );
+      const {
+        data: {
+          createConvo: { id: convoLinkConversationId },
+        },
+      } = conversation;
+      
+      const relation1 = {
+        convoLinkUserId: user.attributes.sub,
+        convoLinkConversationId,
+      };
+      const relation2 = {
+        convoLinkUserId: member.id,
+        convoLinkConversationId,
+      };
+      await API.graphql(graphqlOperation(createConvoLink, relation1));
+      await API.graphql(graphqlOperation(createConvoLink, relation2));
+      history.push(
+        `/conversation/${convoLinkConversationId}/${conversationName}`
+      );
+      setPopup("Chat");
     }
+  }
 
-
-     function subscriptioned(user){
-
+  async function checkIfUserExists(user) {
+    try {
+      const userdata = await API.graphql(graphqlOperation(GetUser, { id: user.attributes.sub }));
+      const { getUser } = userdata.data;
+      if (!getUser) {
+        createUsers(user);
+      }else{
+        rootTree.fetchMembers(user);
+      }
+    } catch (err) {
+      
+      console.log("error fetching user: ", err);
     }
+  }
+
+  async function createUsers(user) {
+    const newUser = {
+      id: user.attributes.sub,
+      username: user.username,
+    };
+    try {
+      await API.graphql(
+        graphqlOperation(createUser, { input: newUser })
+      );
+      rootTree.fetchMembers(user);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
-    <MessageContext.Provider value={{rooms,setRooms,room, setRoom, messages, user, setMessages}} >{children}</MessageContext.Provider>
+    <MessageContext.Provider
+      value={{
+        user,
+        popup,
+        setPopup,
+        createConversation,
+        rootTree
+      }}
+    >
+      {children}
+    </MessageContext.Provider>
   );
 }
 

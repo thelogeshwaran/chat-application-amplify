@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
 import { FiSend } from "react-icons/fi";
 
@@ -11,17 +12,17 @@ function RoomInput({ onSubmit }) {
     }
   };
   return (
-    <div className="flex items-center bg-chatLightGray ">
-      <form className="w-full flex items-center" onSubmit={(e) => setSubmit(e)}>
+    <div className="flex items-center bg-chatPurple justify-center">
+      <form className="w-11/12 flex items-center bg-chatPurpleDark m-2 rounded-xl py-3" onSubmit={(e) => setSubmit(e)}>
         <input
-          placeholder="Create a new Chat"
-          className="m-3 border-2 border-gray-500 w-11/12 h-10 p-3 rounded-xl"
+          placeholder="Write a message..."
+          className="m-2 w-11/12 h-10 p-4 rounded-xl bg-chatPurpleDark outline-none text-xl"
           value={input}
           onChange={(e) => setInput(e.target.value)}
         ></input>
-        <div className="m-3">
+        <div className="">
           <button type="submit">
-            <FiSend size={30} />
+            <FiSend  className="bg-blue-500 h-10 w-10 rounded-full p-2" />
           </button>
         </div>
       </form>
@@ -29,4 +30,4 @@ function RoomInput({ onSubmit }) {
   );
 }
 
-export default RoomInput;
+export default  observer(RoomInput);

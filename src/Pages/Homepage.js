@@ -1,15 +1,15 @@
+import { observer } from "mobx-react-lite";
 import React from "react";
 import ChatBar from "../Components/ChatBar";
-import Chatbox from "../Components/Chatbox";
-import { useMessageProvider } from "../Context/MessagesProvider";
+import MemberBar from "../Components/MemberBar";
 
 function Homepage() {
-  const { room } = useMessageProvider();
   return (
     <div className="flex flex-row h-screen">
       <ChatBar />
+      <MemberBar />
     </div>
   );
 }
 
-export default Homepage;
+export default  observer(Homepage);
