@@ -1,12 +1,12 @@
-import { Store } from "./Store"
+import { Store } from "./Store";
 
+export const setupRootStore = () => {
+  const rootTree = Store.create({
+    messages: [],
+    conversations: [],
+    members: [],
+    popup: "Chat",
+  });
 
-export const setupRootStore =()=>{
-    const rootTree = Store.create({
-        messages:[],
-        conversations:[],
-        members:[]
-    })
-
-    return {rootTree}
-}
+  return { rootTree };
+};

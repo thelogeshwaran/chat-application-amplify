@@ -6,20 +6,18 @@ import Chatbox from "../Components/Chatbox";
 import MemberBar from "../Components/MemberBar";
 import { useMessageProvider } from "../Context/MessagesProvider";
 
-
 function ChatPage() {
   const { rootTree } = useMessageProvider();
   const { conversationId } = useParams();
 
   useEffect(() => {
-    rootTree.fetchMessages(conversationId)
-  }, [conversationId,rootTree]);
-
+    rootTree.fetchMessages(conversationId);
+  }, [conversationId, rootTree]);
 
   return (
     <div className="flex flex-row h-screen">
       <ChatBar />
-      <MemberBar/>
+      <MemberBar />
       <Chatbox />
     </div>
   );

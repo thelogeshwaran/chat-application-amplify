@@ -31,6 +31,7 @@ export const Store = types
     messages: types.array(MessageModel),
     conversations: types.array(ConversationModel),
     members: types.array(MemberModel),
+    popup: types.string,
   })
   .actions((self) => ({
     addNewMessage(message) {
@@ -51,6 +52,9 @@ export const Store = types
     },
     setMembers(members) {
       self.members = members;
+    },
+    setPopup(popup) {
+      self.popup = popup;
     },
     fetchMessages: flow(function* (id) {
       try {

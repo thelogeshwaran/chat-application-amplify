@@ -12,4 +12,4 @@ function Homepage() {
   );
 }
 
-export default  observer(Homepage);
+export default observer(Homepage);

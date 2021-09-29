@@ -10,7 +10,7 @@ import { nanoid } from "nanoid";
 import { observer } from "mobx-react-lite";
 
 function Chatbox() {
-  const { user,rootTree } = useMessageProvider();
+  const { user, rootTree } = useMessageProvider();
   const { conversationId, conversationName } = useParams();
   const messagesEndRef = useRef(null);
 
@@ -30,9 +30,9 @@ function Chatbox() {
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
-  
-  const members = conversationName.split(" and ")
-  const chatName = members.filter( item => item !== user.username)
+
+  const members = conversationName.split(" and ");
+  const chatName = members.filter((item) => item !== user.username);
 
   return (
     <div className="w-full bg-chatPurple flex flex-col">
@@ -41,7 +41,6 @@ function Chatbox() {
         {rootTree.messages.map((item) => (
           <RoomMessages key={item.id} item={item} />
         ))}
-        
       </div>
       <div ref={messagesEndRef} />
       <RoomInput onSubmit={newMessage} />
