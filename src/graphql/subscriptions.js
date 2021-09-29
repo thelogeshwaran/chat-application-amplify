@@ -1,36 +1,174 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateTodo = /* GraphQL */ `
-  subscription OnCreateTodo {
-    onCreateTodo {
+export const onCreateConvoLink = /* GraphQL */ `
+  subscription OnCreateConvoLink($convoLinkUserId: ID!) {
+    onCreateConvoLink(convoLinkUserId: $convoLinkUserId) {
       id
-      name
-      description
+      user {
+        id
+        username
+        conversations {
+          nextToken
+        }
+        messages {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      convoLinkUserId
+      conversation {
+        id
+        messages {
+          nextToken
+        }
+        associated {
+          nextToken
+        }
+        name
+        members
+        createdAt
+        updatedAt
+      }
+      convoLinkConversationId
       createdAt
       updatedAt
     }
   }
 `;
-export const onUpdateTodo = /* GraphQL */ `
-  subscription OnUpdateTodo {
-    onUpdateTodo {
+export const onCreateMessage = /* GraphQL */ `
+  subscription OnCreateMessage($messageConversationId: ID!) {
+    onCreateMessage(messageConversationId: $messageConversationId) {
       id
-      name
-      description
+      author {
+        id
+        username
+        conversations {
+          nextToken
+        }
+        messages {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      authorId
+      content
+      conversation {
+        id
+        messages {
+          nextToken
+        }
+        associated {
+          nextToken
+        }
+        name
+        members
+        createdAt
+        updatedAt
+      }
+      messageConversationId
       createdAt
       updatedAt
     }
   }
 `;
-export const onDeleteTodo = /* GraphQL */ `
-  subscription OnDeleteTodo {
-    onDeleteTodo {
+export const onCreateUser = /* GraphQL */ `
+  subscription OnCreateUser {
+    onCreateUser {
       id
-      name
-      description
+      username
+      conversations {
+        items {
+          id
+          convoLinkUserId
+          convoLinkConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      messages {
+        items {
+          id
+          authorId
+          content
+          messageConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
+      owner
+    }
+  }
+`;
+export const onUpdateUser = /* GraphQL */ `
+  subscription OnUpdateUser {
+    onUpdateUser {
+      id
+      username
+      conversations {
+        items {
+          id
+          convoLinkUserId
+          convoLinkConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      messages {
+        items {
+          id
+          authorId
+          content
+          messageConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onDeleteUser = /* GraphQL */ `
+  subscription OnDeleteUser {
+    onDeleteUser {
+      id
+      username
+      conversations {
+        items {
+          id
+          convoLinkUserId
+          convoLinkConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      messages {
+        items {
+          id
+          authorId
+          content
+          messageConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+      owner
     }
   }
 `;
