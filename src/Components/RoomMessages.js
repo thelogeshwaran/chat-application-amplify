@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { useMessageProvider } from "../Context/MessagesProvider";
+import { motion } from "framer-motion"
 
 function RoomMessages({ item }) {
   const { user } = useMessageProvider();
@@ -14,7 +15,10 @@ function RoomMessages({ item }) {
     <div>
       <div className="flex">
         {item.authorId === user.username ? (
-          <div className="flex ml-auto items-end  mx-4 p-3">
+          <motion.div
+          initial={{y: -60, opacity:0}}
+           animate={{y: 0,opacity:1}}
+           transition={{ delay:0.2}} className="flex ml-auto items-end  mx-4 p-3">
             <div className="bg-chatBlue w-min p-3 mx-5 rounded-xl ">
               <div className="text-xl"> {item.content}</div>
               <div className="text-xs whitespace-nowrap mt-2">{time}</div>
@@ -24,10 +28,13 @@ function RoomMessages({ item }) {
               className="h-14 w-14 rounded-full"
               src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
             ></img>
-          </div>
+          </motion.div>
         ) : (
-          <div className="flex items-end p-3 px-6">
-            {" "}
+          <motion.div 
+          initial={{y: -60, opacity:0}}
+           animate={{y: 0,opacity:1}}
+           transition={{ delay:0.2}}className="flex items-end p-3 px-6">
+          
             <img
               alt="img"
               className="h-14 w-14 rounded-full "
@@ -37,7 +44,7 @@ function RoomMessages({ item }) {
               <div className="text-xl "> {item.content}</div>
               <div className="text-xs whitespace-nowrap mt-2">{time}</div>
             </div>
-          </div>
+          </motion.div>
         )}
       </div>
     </div>
