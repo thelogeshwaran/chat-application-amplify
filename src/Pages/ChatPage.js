@@ -1,3 +1,4 @@
+import { AnimatePresence } from "framer-motion";
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 import { useParams } from "react-router";
@@ -16,8 +17,8 @@ function ChatPage() {
 
   return (
     <div className="flex flex-row h-screen">
-      <ChatBar />
-      <MemberBar />
+      { rootTree.popup ==="Chat" && <ChatBar />}
+      { rootTree.popup ==="Members" && <MemberBar />}
       <Chatbox />
     </div>
   );

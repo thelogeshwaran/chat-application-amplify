@@ -86,7 +86,7 @@ export function MessageProvider({ children }) {
       history.push(
         `/conversation/${convoLinkConversationId}/${conversationName}`
       );
-      rootTree.Popup("Chat");
+      rootTree.setPopup("Chat");
     }
   }
 
